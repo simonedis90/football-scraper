@@ -1,0 +1,40 @@
+{
+  "name": "football-scraper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "scraper.js",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "dom-parser": "^0.1.6",
+    "htmlparser2": "^4.0.0",
+    "jsdom": "^15.1.1",
+    "node-html-parser": "^1.1.16",
+    "puppeteer": "^1.20.0",
+    "puppeteer-core": "^1.20.0",
+    "query-selector": "^2.0.0",
+    "request": "^2.88.0"
+  },
+  "devDependencies": {
+    "dom-parser": "^0.1.6",
+    "htmlparser2": "^4.0.0",
+    "jsdom": "^15.1.1",
+    "node-html-parser": "^1.1.16",
+    "puppeteer": "^1.20.0",
+    "puppeteer-core": "^1.20.0",
+    "query-selector": "^2.0.0",
+    "request": "^2.88.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/simonedis90/football-scraper.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/simonedis90/football-scraper/issues"
+  },
+  "homepage": "https://github.com/simonedis90/football-scraper#readme"
+}
