@@ -10,7 +10,7 @@ export class Scraper {
 
     }
 
-    init(page): Promise<boolean>{
+    init(page): Promise<Scraper>{
         return new Promise((resolve) => {
             puppeteer.launch({}).then(browser => {
                 this.browser = browser;
@@ -18,7 +18,7 @@ export class Scraper {
                     this.page = page;
 
                     page.goto('http://www.diretta.it', {waitUntil: 'networkidle2'}).then(re => {
-                        resolve(true);
+                        resolve(this);
                     });
                 })
             })
@@ -28,7 +28,7 @@ export class Scraper {
 
     evaluate(page): Promise<Array<any>>{
         return new Promise((resolve) => {
-            page.evaluate().then( eva => {
+            page.evaluate( eva => {
 
                 const arr = [];
                 document.querySelectorAll(".event__match").forEach( (match: any) => {
@@ -43,28 +43,15 @@ export class Scraper {
         })
 
     }
-    request(){
 
-        const parser = new DomParser();
-        request('http://www.diretta.it', function (error, response, body) {
+    async scrap(fn: (arg)=> any){
+        const browser = await puppeteer.launch({});
+        const page = await browser.newPage();
+        await page.goto('https://www.diretta.it', {waitUntil: 'networkidle2'});
 
-        });
-    }
 
-    async scrap(){
-            console.log(new Date(), "start")
-            const browser = await puppeteer.launch({});
-            console.log(new Date(), "launched")
-            const page = await browser.newPage();
-            console.log(new Date(), "new page")
-            await page.goto('https://www.diretta.it', {waitUntil: 'networkidle2'});
-            console.log(new Date(), "goto")
-
-            const results = [] ;
-
-            console.log(new Date(), "evalute1")
-
-            const text = await page.evaluate( () => {
+        setInterval(async ()=>{
+            const result = await page.evaluate( () => {
 
                 let arr = [];
                 document.querySelectorAll(".event__match").forEach( (match: any) => {
@@ -72,38 +59,33 @@ export class Scraper {
                     const away = match.querySelector(".event__participant--away").innerText;
                     const results = match.querySelector(".event__scores").querySelectorAll('span');
                     arr.push(home + (results[0] ? ' ' + results[0].innerText : '') + " - "+ (results[1] ?  results[1].innerText + ' ' : '') + away);
+
+                    arr.push({
+                        home: {
+                            home,
+                            score: results[0]
+                        },
+                        away:{
+                            away,
+                            score: results[1]
+                        }
+                    })
 
                 })
                 return arr;
             })
-        console.log(new Date(), "end evaluta")
 
-        setInterval(()=>{
-            page.evaluate()
-            page.evaluate( () => {
+            fn(result);
 
-                let arr = [];
-                document.querySelectorAll(".event__match").forEach( (match: any) => {
-                    const home = match.querySelector(".event__participant--home").innerText;
-                    const away = match.querySelector(".event__participant--away").innerText;
-                    const results = match.querySelector(".event__scores").querySelectorAll('span');
-                    arr.push(home + (results[0] ? ' ' + results[0].innerText : '') + " - "+ (results[1] ?  results[1].innerText + ' ' : '') + away);
+        }, 1000)
 
-                })
-                console.log(arr, new Date().getSeconds() );
-            })
-
-        }, 2000)
-
-        console.log(text)
     }
 }
 
+/*
 new Scraper().init("https://www.diretta.it").then(re => {
-    /*
-    re.evaluate().then(res => {
-        console.log(res);
-    })
-
-     */
+    re.scrap((v)=>{
+        console.log(new Date())
+    }).then();
 });
+*/
