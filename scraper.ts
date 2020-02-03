@@ -48,19 +48,16 @@ export class Scraper {
             fn(JSON.parse(x))
 
         }
-        if (interval) {
-            setInterval(async () => {
-                fns()
-            }, 1000)
-        } else {
-            fns();
-        }
+
+        setInterval(async () => {
+            fns()
+        }, interval)
+        fns();
     }
 }
 
 // new Scraper().init().then(re => {
 //     re.scrap((results) => {
 //         console.log(results, new Date());
-//         process.abort();
-//     }, "https://www.diretta.it").then();
+//     }, "https://www.diretta.it", 5000).then();
 // });
