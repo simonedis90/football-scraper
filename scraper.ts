@@ -1,8 +1,9 @@
 import * as puppeteer from "puppeteer"
 import * as request from 'request'
 import * as DomParser from 'dom-parser';
+import {Injectable} from "@nestjs/common";
 
-
+@Injectable()
 export class Scraper {
     constructor() {
 
